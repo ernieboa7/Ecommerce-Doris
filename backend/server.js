@@ -82,6 +82,7 @@ app.listen(config.PORT, () => {
 
 */
 
+
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -100,6 +101,7 @@ import productRoute from './routes/productRoute.js';
 import orderRoute from './routes/orderRoute.js';
 import uploadRoute from './routes/uploadRoute.js';
 
+// === Paths ===
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -116,8 +118,8 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log(' Connected to MongoDB Atlas successfully'))
-  .catch((err) => console.error(' MongoDB connection error:', err.message));
+  .then(() => console.log('Connected to MongoDB Atlas successfully'))
+  .catch((err) => console.error('MongoDB connection error:', err.message));
 
 // === Serve Uploads Folder ===
 // Note: Render’s filesystem is ephemeral; use S3 or Cloudinary for persistent storage
@@ -134,19 +136,14 @@ app.get('/api/config/paypal', (req, res) => {
   res.send(config.PAYPAL_CLIENT_ID);
 });
 
-// === Serve React Frontend ===
-// When in production (Render), serve static files from frontend-react/build
-const __rootDir = path.resolve(__dirname, '..'); // go up from /backend to project root
-
-app.use(express.static(path.join(__rootDir, 'frontend-react', 'build')));
-
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__rootDir, 'frontend-react', 'build', 'index.html'));
+// === Base route ===
+// This replaces the React serving code — keeps backend clean for API use
+app.get('/', (req, res) => {
+  res.send('API is running...');
 });
 
 // === Start Server ===
-const port = config.PORT || 5000;
+const port = config.PORT || 5001;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
-
