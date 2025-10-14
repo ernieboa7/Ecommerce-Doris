@@ -1,0 +1,36 @@
+{
+  "name": "amazona",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon --watch backend --exec babel-node backend/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.901.0",
+    "aws-sdk": "^2.1692.0",
+    "backend": "^0.0.0",
+    "body-parser": "^2.2.0",
+    "bootstrap": "^5.3.8",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.1",
+    "js-cookie": "^2.2.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb": "^6.20.0",
+    "mongoose": "^8.19.0",
+    "multer": "^2.0.2",
+    "multer-s3": "^3.0.1",
+    "react-bootstrap": "^2.10.10",
+    "react-router-bootstrap": "^0.26.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.25.9",
+    "@babel/core": "^7.26.0",
+    "@babel/node": "^7.26.0",
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "@babel/preset-env": "^7.26.0",
+    "nodemon": "^3.1.10"
+  }
+}
