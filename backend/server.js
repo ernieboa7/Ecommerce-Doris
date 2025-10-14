@@ -1,5 +1,5 @@
 
-
+/*
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -31,7 +31,7 @@ app.use(bodyParser.json());
 /*app.use(cors({
   origin: 'http://localhost:3000'
 }));
-*/
+
 app.use(cors()); // Allow all origins by default
 
 // Serve uploads folder
@@ -71,7 +71,7 @@ app.get('*', (req, res) => {
 app.get('*', (req, res) =>
   res.sendFile(path.join(__dirname, 'frontend-react/build/index.html'))
 );
-*/
+
 
 
 
@@ -79,3 +79,74 @@ app.get('*', (req, res) =>
 app.listen(config.PORT, () => {
   console.log(`Server started at http://localhost:${config.PORT}`);
 });
+
+*/
+
+import dotenv from 'dotenv';
+dotenv.config();
+
+import express from 'express';
+import cors from 'cors';
+import path from 'path';
+import mongoose from 'mongoose';
+import bodyParser from 'body-parser';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+// === Local imports ===
+import config from './config.js';
+import userRoute from './routes/userRoute.js';
+import productRoute from './routes/productRoute.js';
+import orderRoute from './routes/orderRoute.js';
+import uploadRoute from './routes/uploadRoute.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// === Init Express ===
+const app = express();
+
+// === Middleware ===
+app.use(bodyParser.json());
+app.use(cors()); // Allow all origins
+
+// === MongoDB Connection ===
+mongoose
+  .connect(config.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log(' Connected to MongoDB Atlas successfully'))
+  .catch((err) => console.error(' MongoDB connection error:', err.message));
+
+// === Serve Uploads Folder ===
+// Note: Render’s filesystem is ephemeral; use S3 or Cloudinary for persistent storage
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// === API Routes ===
+app.use('/api/uploads', uploadRoute);
+app.use('/api/users', userRoute);
+app.use('/api/products', productRoute);
+app.use('/api/orders', orderRoute);
+
+// === PayPal Config Route ===
+app.get('/api/config/paypal', (req, res) => {
+  res.send(config.PAYPAL_CLIENT_ID);
+});
+
+// === Serve React Frontend ===
+// When in production (Render), serve static files from frontend-react/build
+const __rootDir = path.resolve(__dirname, '..'); // go up from /backend to project root
+
+app.use(express.static(path.join(__rootDir, 'frontend-react', 'build')));
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__rootDir, 'frontend-react', 'build', 'index.html'));
+});
+
+// === Start Server ===
+const port = config.PORT || 5000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
