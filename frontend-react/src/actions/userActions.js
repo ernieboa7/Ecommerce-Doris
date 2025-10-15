@@ -17,7 +17,7 @@ import {
 } from "../constants/userConstants";
 
 // Base URL for backend API
-const API_BASE = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5001';
+const API_BASE = process.env.REACT_APP_API_BASE_URL || 'https://ecommerce-doris.onrender.com'; //'http://localhost:5001';
 
 // Utility to extract meaningful error messages
 const getErrorMessage = (error) =>
