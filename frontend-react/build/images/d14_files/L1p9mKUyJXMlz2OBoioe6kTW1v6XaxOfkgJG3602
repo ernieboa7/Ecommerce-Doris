@@ -1,0 +1,248 @@
+
+if (typeof (window) !== 'undefined' && window.performance && window.performance.mark) {
+  window.performance.mark('yotpo:loader:loaded');
+}
+var yotpoWidgetsContainer = yotpoWidgetsContainer || { guids: {} };
+(function(){
+    var guid = "L1p9mKUyJXMlz2OBoioe6kTW1v6XaxOfkgJG3602";
+    var loader = {
+        loadDep: function (link, onLoad, strategy) {
+            var script = document.createElement('script');
+            script.onload = onLoad || function(){};
+            script.src = link;
+            if (strategy === 'defer') {
+                script.defer = true;
+            } else if (strategy === 'async') {
+                script.async = true;
+            }
+            script.setAttribute("type", "text/javascript");
+            script.setAttribute("charset", "utf-8");
+            document.head.appendChild(script);
+        },
+        config: {
+            data: {
+                guid: guid
+            },
+            widgets: {
+            
+                "1015598": {
+                    instanceId: "1015598",
+                    instanceVersionId: "430316521",
+                    templateAssetUrl: "https://cdn-widgetsrepository.yotpo.com/widget-assets/widget-reviews-main-widget/app.v0.117.7-7297.js",
+                    cssOverrideAssetUrl: "https://cdn-widget-assets.yotpo.com/ReviewsMainWidget/L1p9mKUyJXMlz2OBoioe6kTW1v6XaxOfkgJG3602/css-overrides/css-overrides.2025_07_23_15_05_48_716.css",
+                    customizationCssUrl: "",
+                    customizations: {
+                      "bottom-line-custom-questions-enable": false,
+                      "bottom-line-enable": true,
+                      "bottom-line-show-text": true,
+                      "bottom-line-text": "{{reviews_count}} Reviews",
+                      "bundled-products-enable": true,
+                      "content-date-enable": true,
+                      "content-date-format": "DD/MM/YY",
+                      "content-pagination-per-page": 5,
+                      "content-pagination-per-page-boldLayout": 9,
+                      "default-sorting-order": "Most relevant||Most recent||With media||Verified purchase||Rating",
+                      "default-sorting-order-smart-score": "Most relevant||Most recent||With media||Verified purchase||Rating",
+                      "empty-state-body-text": "Let us know what you think",
+                      "empty-state-button-text": "Be the first to write a review!",
+                      "empty-state-enable": "false",
+                      "empty-state-title-text": "We’re looking for stars!",
+                      "example-background-color": "#3184ed",
+                      "feature-reviews-filter-by-media-onsite-enable": "false",
+                      "feature-reviews-filter-by-smart-topics-onsite-enable": "true",
+                      "feature-reviews-filter-by-star-rating-onsite-enable": "true",
+                      "feature-reviews-search-onsite-enable": "true",
+                      "feature-reviews-smart-topics-minimum": 2,
+                      "feature-reviews-sorting-onsite-enable": "true",
+                      "feature-reviews-star-distribution-onsite-enable": "true",
+                      "grouped-products-enable": false,
+                      "incentivized-badge-color": "#373330",
+                      "incentivized-badge-details-enable": false,
+                      "incentivized-badge-enable": false,
+                      "incentivized-badge-title": "Incentivized review",
+                      "language-code": "en",
+                      "load-font-customizations": "view-primary-font, view-secondary-font",
+                      "media-gallery-enable": true,
+                      "media-gallery-headline-text": "Reviews with media",
+                      "media-gallery-minimum-images": 5,
+                      "mode-show-only-add-review-button": false,
+                      "ocean-button-style": 1,
+                      "ocean-enable": false,
+                      "onsite-sorting": "",
+                      "primary-font-name-and-url": "Montserrat@600|https://cdn-widgetsrepository.yotpo.com/web-fonts/css/montserrat/v1/montserrat_600.css",
+                      "primary-font-size": "14",
+                      "read-only-enable": "true",
+                      "reply-title": "Store Owner",
+                      "reviews-filter-by-bundle-product-enable": false,
+                      "reviews-headline-enable": "true",
+                      "reviews-headline-text": "Customer Reviews",
+                      "reviews-product-custom-questions-color": "#2e4f7c",
+                      "reviews-product-custom-questions-enable": false,
+                      "reviews-product-custom-questions-filters-enable": false,
+                      "reviews-product-custom-questions-placement": "Right",
+                      "reviews-product-variant-enable": false,
+                      "reviews-reviewer-country-flag-enable": true,
+                      "reviews-reviewer-custom-questions-enable": false,
+                      "reviews-reviewer-custom-questions-filters-enable": false,
+                      "reviews-show-tab-title": false,
+                      "reviews-summary-banner-button-text": "Take me there",
+                      "reviews-summary-banner-headline": "A lot to digest?",
+                      "reviews-summary-banner-primary-color": "#000000",
+                      "reviews-summary-banner-text": "Read an AI-generated summary of recent customer reviews by topic",
+                      "reviews-summary-banner-text-color": "#000000",
+                      "reviews-summary-banner-toggle-enable": false,
+                      "reviews-summary-toggle-enable": "true",
+                      "reviews-votes-enable": true,
+                      "reviews-votes-text": "Was this review helpful?",
+                      "screen-a-header-text": "Hello Live Widget!",
+                      "shopper-avatar-enable": "false",
+                      "shopper-avatar-enable-boldLayout": "false",
+                      "shopper-avatar-format": "icon",
+                      "shopper-badge-enable": true,
+                      "shopper-name-format": "firstNameWithInitial",
+                      "should-lazy-load": false,
+                      "smart-score-sort-enable": true,
+                      "summary-button-style": 2,
+                      "summary-button-text": "See reviews summary",
+                      "summary-hide-logo-enable": false,
+                      "summary-min-star-rating": 3,
+                      "summary-show-button-icon": true,
+                      "summary-topic-emoji": "thumbs",
+                      "syndication-enable": false,
+                      "view-background-color": "transparent",
+                      "view-empty-button-color": "#2e4f7c",
+                      "view-layout": "standardLayout",
+                      "view-line-separator-style": "smooth",
+                      "view-primary-color": "rgba(39,48,57,1)",
+                      "view-primary-font": "Lato@700|https://cdn-widgetsrepository.yotpo.com/web-fonts/css/lato/v1/lato_700.css",
+                      "view-secondary-font": "Lato@400|https://cdn-widgetsrepository.yotpo.com/web-fonts/css/lato/v1/lato_400.css",
+                      "view-stars-color": "rgba(39,48,57,1)",
+                      "view-text-color": "rgba(39,48,57,1)",
+                      "view-widget-width": "100",
+                      "white-label-enable": "true",
+                      "widget-reviews-filter-by-country-enable": false,
+                      "widget-reviews-filter-by-product-variants-enable": false
+                    },
+                    staticContent: {
+                      "feature_crawlable_ai_snippet": "enabled",
+                      "feature_filter_by_country": "enabled",
+                      "feature_media_gallery_add_to_cart": "disabled",
+                      "feature_media_gallery_upload_photos": "disabled",
+                      "feature_media_gallery_upload_videos": "disabled",
+                      "feature_reviews_bottom_line_syndication": "disabled",
+                      "feature_reviews_css_editor": "enabled",
+                      "feature_reviews_custom_questions": "disabled",
+                      "feature_reviews_disable_shopper_side_cookies": "disabled",
+                      "feature_reviews_filter_by_media": "enabled",
+                      "feature_reviews_filter_by_smart_topics": "enabled",
+                      "feature_reviews_filter_by_star_rating": "enabled",
+                      "feature_reviews_grouped_products": "enabled",
+                      "feature_reviews_highly_rated_topics": "enabled",
+                      "feature_reviews_incentivized_badge": "enabled",
+                      "feature_reviews_media_gallery": "enabled",
+                      "feature_reviews_ocean": "disabled",
+                      "feature_reviews_order_metadata": "disabled",
+                      "feature_reviews_photos_and_videos": "enabled",
+                      "feature_reviews_product_variant": "disabled",
+                      "feature_reviews_search": "enabled",
+                      "feature_reviews_smart_sorting": "enabled",
+                      "feature_reviews_sorting": "enabled",
+                      "feature_reviews_star_distribution": "enabled",
+                      "feature_reviews_summary": "enabled",
+                      "feature_reviews_summary_filter": "enabled",
+                      "feature_reviews_syndication": "enabled",
+                      "feature_reviews_trusted_vendors": "disabled",
+                      "feature_reviews_video_support_settings_ks": "djJ8MzMwNDI4M3xkXH4Ckvog__TxeeZCT5AurmL_RI_1d3EAoZPR7yRYsd6OeBqrGbHDgzles3oX5EU858oqlQoRVBk4LuFSk3qt",
+                      "feature_reviews_video_support_settings_metadata_profile_id": "14959603",
+                      "feature_reviews_video_support_settings_partner_id": "3304283",
+                      "feature_reviews_white_label": "enabled",
+                      "feature_reviews_widget_v3_settings_enabled_by_onboarding": "true",
+                      "feature_terms_and_conditions": "disabled",
+                      "feature_translation_cta": "disabled"
+                    },
+                    className: "ReviewsMainWidget",
+                    dependencyGroupId: null
+                },
+            
+            },
+            guidStaticContent: {
+                      "ugc": {
+                        "feature_crawlable_ai_snippet": "enabled",
+                        "feature_reviews_highly_rated_topics": "enabled",
+                        "feature_reviews_media_gallery": "enabled",
+                        "feature_reviews_smart_sorting": "enabled",
+                        "feature_reviews_video_support_settings_ks": "djJ8MzMwNDI4M3xkXH4Ckvog__TxeeZCT5AurmL_RI_1d3EAoZPR7yRYsd6OeBqrGbHDgzles3oX5EU858oqlQoRVBk4LuFSk3qt"
+                      }
+                    },
+            dependencyGroups: {}
+        },
+        initializer: "https://cdn-widgetsrepository.yotpo.com/widget-assets/widgets-initializer/app.v0.9.6-7348.js",
+        analytics: "https://cdn-widgetsrepository.yotpo.com/widget-assets/yotpo-pixel/2024-04-18_14-53-12/bundle.js"
+    }
+    
+    
+    const initWidgets = function (config, initializeWidgets = true) {
+        const widgetInitializer = yotpoWidgetsContainer['yotpo_widget_initializer'](config);
+        return widgetInitializer.initWidgets(initializeWidgets);
+    };
+    const initWidget = function (config, instanceId, widgetPlaceHolder) {
+        const widgetInitializer = yotpoWidgetsContainer['yotpo_widget_initializer'](config);
+        if (widgetInitializer.initWidget) {
+            return widgetInitializer.initWidget(instanceId, widgetPlaceHolder);
+        }
+        console.error("initWidget is not supported widgetInitializer");
+    };
+    const onInitializerLoad = function (config) {
+        const prevInitWidgets = yotpoWidgetsContainer.initWidgets;
+        yotpoWidgetsContainer.initWidgets = function (initializeWidgets = true) {
+            if (prevInitWidgets) {
+                if (typeof Promise !== 'undefined' && Promise.all) {
+                    return Promise.all([prevInitWidgets(initializeWidgets), initWidgets(config, initializeWidgets)]);
+                }
+                console.warn('[deprecated] promise is not supported in initWidgets');
+                prevInitWidgets(initializeWidgets);
+            }
+            return initWidgets(config, initializeWidgets);
+        }
+        const prevInitWidget = yotpoWidgetsContainer.initWidget;
+        yotpoWidgetsContainer.initWidget = function (instanceId, widgetPlaceHolder) {
+            if (prevInitWidget) {
+              prevInitWidget(instanceId, widgetPlaceHolder)
+            }
+            return initWidget(config, instanceId, widgetPlaceHolder);
+        }
+        const guidWidgetContainer = getGuidWidgetsContainer();
+        guidWidgetContainer.initWidgets = function () {
+            return initWidgets(config);
+        }
+        guidWidgetContainer.initWidgets();
+    };
+    function getGuidWidgetsContainer () {
+        if (!yotpoWidgetsContainer.guids) {
+            yotpoWidgetsContainer.guids = {};
+        }
+        if (!yotpoWidgetsContainer.guids[guid]) {
+            yotpoWidgetsContainer.guids[guid] = {};
+        }
+        return yotpoWidgetsContainer.guids[guid];
+    }
+
+    
+
+    const guidWidgetContainer = getGuidWidgetsContainer();
+    guidWidgetContainer.config = loader.config;
+    if (!guidWidgetContainer.yotpo_widget_scripts_loaded) {
+        guidWidgetContainer.yotpo_widget_scripts_loaded = true;
+        guidWidgetContainer.onInitializerLoad = function () { onInitializerLoad(loader.config) };
+        
+        
+        loader.loadDep(loader.analytics, function () {}, 'defer');
+        
+        
+        
+        loader.loadDep(loader.initializer, function () { guidWidgetContainer.onInitializerLoad() }, 'async');
+        
+    }
+})()
+
+

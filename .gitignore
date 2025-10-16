@@ -8,7 +8,7 @@ frontend-react/node_modules/
 backend/node_modules/
 
 # === Build and dist ===
-frontend-react/build/
+#frontend-react/build/
 backend/dist/
 dist/
 
@@ -44,7 +44,7 @@ cypress/videos/
 cypress/screenshots/
 
 # === Uploads / Generated files ===
-backend/uploads/
+#backend/uploads/
 uploads/
 
 # === Misc ===
