@@ -148,7 +148,7 @@ import {
 //
 //  UPLOAD PRODUCT IMAGE (Cloudinary Integration)
 //
-export const uploadProductImage = (file) => async (dispatch, getState) => {
+const uploadProductImage = (file) => async (dispatch, getState) => {
   try {
     const formData = new FormData();
     formData.append("image", file);
@@ -175,7 +175,7 @@ export const uploadProductImage = (file) => async (dispatch, getState) => {
 //
 //  LIST PRODUCTS
 //
-export const listProducts =
+const listProducts =
   (category = "", searchKeyword = "", sortOrder = "") =>
   async (dispatch) => {
     try {
@@ -195,7 +195,7 @@ export const listProducts =
 //
 //  PRODUCT DETAILS
 //
-export const detailsProduct = (productId) => async (dispatch) => {
+const detailsProduct = (productId) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
     const { data } = await axiosInstance.get(`/products/${productId}`);
@@ -211,7 +211,7 @@ export const detailsProduct = (productId) => async (dispatch) => {
 //
 //  CREATE OR UPDATE PRODUCT
 //
-export const saveProduct = (product) => async (dispatch, getState) => {
+const saveProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_SAVE_REQUEST, payload: product });
     const {
@@ -240,7 +240,7 @@ export const saveProduct = (product) => async (dispatch, getState) => {
 //
 //  DELETE PRODUCT
 //
-export const deleteProduct = (productId) => async (dispatch, getState) => {
+const deleteProduct = (productId) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_DELETE_REQUEST, payload: productId });
     const {
@@ -263,7 +263,7 @@ export const deleteProduct = (productId) => async (dispatch, getState) => {
 //
 // SAVE PRODUCT REVIEW
 //
-export const saveProductReview =
+const saveProductReview =
   (productId, review) => async (dispatch, getState) => {
     try {
       dispatch({ type: PRODUCT_REVIEW_SAVE_REQUEST, payload: review });
@@ -287,3 +287,12 @@ export const saveProductReview =
       });
     }
   };
+
+export {
+  uploadProductImage,
+  listProducts,
+  detailsProduct,
+  saveProduct,
+  deleteProduct,
+  saveProductReview,
+};    

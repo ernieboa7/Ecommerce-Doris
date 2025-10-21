@@ -8,7 +8,7 @@ import {
 } from "../constants/cartConstants";
 
 // Add item to cart
-export const addToCart = (productId, qty) => async (dispatch, getState) => {
+const addToCart = (productId, qty) => async (dispatch, getState) => {
   try {
     // Fetch product details from your backend API (Render)
     const { data } = await axiosInstance.get(`/products/${productId}`);
@@ -35,7 +35,7 @@ export const addToCart = (productId, qty) => async (dispatch, getState) => {
 };
 
 // Remove item from cart
-export const removeFromCart = (productId) => (dispatch, getState) => {
+const removeFromCart = (productId) => (dispatch, getState) => {
   dispatch({ type: CART_REMOVE_ITEM, payload: productId });
 
   const {
@@ -45,13 +45,13 @@ export const removeFromCart = (productId) => (dispatch, getState) => {
 };
 
 // Save shipping address
-export const saveShipping = (data) => (dispatch) => {
+const saveShipping = (data) => (dispatch) => {
   dispatch({ type: CART_SAVE_SHIPPING, payload: data });
   Cookies.set("shippingAddress", JSON.stringify(data));
 };
 
 // Save payment method
-export const savePayment = (data) => (dispatch) => {
+const savePayment = (data) => (dispatch) => {
   dispatch({ type: CART_SAVE_PAYMENT, payload: data });
   Cookies.set("paymentMethod", JSON.stringify(data));
 };
@@ -59,3 +59,5 @@ export const savePayment = (data) => (dispatch) => {
 
 
 
+
+export { addToCart, removeFromCart, saveShipping, savePayment }

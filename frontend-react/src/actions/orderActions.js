@@ -21,7 +21,7 @@ import {
 } from "../constants/orderConstants";
 
 //  Create Order
-export const createOrder = (order) => async (dispatch, getState) => {
+const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_CREATE_REQUEST, payload: order });
     const {
@@ -44,7 +44,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
 };
 
 //  Get My Orders
-export const listMyOrders = () => async (dispatch, getState) => {
+const listMyOrders = () => async (dispatch, getState) => {
   try {
     dispatch({ type: MY_ORDER_LIST_REQUEST });
     const {
@@ -65,7 +65,7 @@ export const listMyOrders = () => async (dispatch, getState) => {
 };
 
 //  Get All Orders (Admin)
-export const listOrders = () => async (dispatch, getState) => {
+const listOrders = () => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_LIST_REQUEST });
     const {
@@ -86,7 +86,7 @@ export const listOrders = () => async (dispatch, getState) => {
 };
 
 //  Get Order Details
-export const detailsOrder = (orderId) => async (dispatch, getState) => {
+const detailsOrder = (orderId) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_DETAILS_REQUEST, payload: orderId });
     const {
@@ -107,7 +107,7 @@ export const detailsOrder = (orderId) => async (dispatch, getState) => {
 };
 
 //  Pay Order
-export const payOrder = (order, paymentResult) => async (dispatch, getState) => {
+const payOrder = (order, paymentResult) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_PAY_REQUEST, payload: paymentResult });
     const {
@@ -132,7 +132,7 @@ export const payOrder = (order, paymentResult) => async (dispatch, getState) => 
 };
 
 //  Delete Order (Admin)
-export const deleteOrder = (orderId) => async (dispatch, getState) => {
+const deleteOrder = (orderId) => async (dispatch, getState) => {
   try {
     dispatch({ type: ORDER_DELETE_REQUEST, payload: orderId });
     const {
@@ -151,3 +151,10 @@ export const deleteOrder = (orderId) => async (dispatch, getState) => {
     });
   }
 };
+
+
+
+
+
+
+export { createOrder, detailsOrder, payOrder, listMyOrders, listOrders, deleteOrder };

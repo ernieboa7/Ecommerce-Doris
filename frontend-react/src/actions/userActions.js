@@ -19,7 +19,7 @@ const getErrorMessage = (error) =>
   error.response?.data?.message || error.message;
 
 // --- Sign In ---
-export const signin = (email, password) => async (dispatch) => {
+const signin = (email, password) => async (dispatch) => {
   dispatch({ type: USER_SIGNIN_REQUEST, payload: { email, password } });
 
   try {
@@ -40,7 +40,7 @@ export const signin = (email, password) => async (dispatch) => {
 };
 
 // --- Register ---
-export const register = (name, email, password) => async (dispatch) => {
+const register = (name, email, password) => async (dispatch) => {
   dispatch({ type: USER_REGISTER_REQUEST, payload: { name, email, password } });
 
   try {
@@ -62,7 +62,7 @@ export const register = (name, email, password) => async (dispatch) => {
 };
 
 // --- Update Profile ---
-export const update = ({ userId, name, email, password }) => async (dispatch, getState) => {
+const update = ({ userId, name, email, password }) => async (dispatch, getState) => {
   const {
     userSignin: { userInfo },
   } = getState();
@@ -92,8 +92,11 @@ export const update = ({ userId, name, email, password }) => async (dispatch, ge
 };
 
 // --- Logout ---
-export const logout = () => (dispatch) => {
+const logout = () => (dispatch) => {
   Cookies.remove("userInfo");
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_LOGOUT });
 };
+
+
+export { signin, register, update, logout };
