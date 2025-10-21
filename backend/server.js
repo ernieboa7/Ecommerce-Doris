@@ -1,105 +1,20 @@
-
-/*
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-import express from 'express';
-import cors from 'cors';
-import path from 'path';
-import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-
-// Local imports
-import config from './config.js';
-import userRoute from './routes/userRoute.js';
-import productRoute from './routes/productRoute.js';
-import orderRoute from './routes/orderRoute.js';
-import uploadRoute from './routes/uploadRoute.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-
-// === Init Express ===
-const app = express();
-
-// === Middleware ===
-app.use(bodyParser.json());
-
-/*app.use(cors({
-  origin: 'http://localhost:3000'
-}));
-
-app.use(cors()); // Allow all origins by default
-
-// Serve uploads folder
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
-// === MongoDB Connection ===
-mongoose.connect(config.MONGODB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("Connected to MongoDB Atlas successfully"))
-.catch((err) => console.error("MongoDB connection error:", err.message));
-
-// === API Routes ===
-app.use('/api/uploads', uploadRoute);
-app.use('/api/users', userRoute);
-app.use('/api/products', productRoute);
-app.use('/api/orders', orderRoute);
-
-// PayPal Config Route
-app.get('/api/config/paypal', (req, res) => {
-  res.send(config.PAYPAL_CLIENT_ID);
-});
-
-// === Serve Frontend ===
-app.use(express.static(path.join(__dirname, '../frontend-react/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, '../frontend-react/build', 'index.html'));
-});
-
-
-//import path from 'path';
-//const __dirname = path.resolve();
-
-/*app.use(express.static(path.join(__dirname, 'frontend-react/build')));
-
-app.get('*', (req, res) =>
-  res.sendFile(path.join(__dirname, 'frontend-react/build/index.html'))
-);
-
-
-
-
-// === Start Server ===
-app.listen(config.PORT, () => {
-  console.log(`Server started at http://localhost:${config.PORT}`);
-});
-
-*/
-
-
-import dotenv from 'dotenv';
-dotenv.config();
-
-import express from 'express';
-import cors from 'cors';
-import path from 'path';
-import mongoose from 'mongoose';
-import bodyParser from 'body-parser';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
+import express from "express";
+import cors from "cors";
+import path from "path";
+import mongoose from "mongoose";
+import bodyParser from "body-parser";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
 
 // === Local imports ===
-import config from './config.js';
-import userRoute from './routes/userRoute.js';
-import productRoute from './routes/productRoute.js';
-import orderRoute from './routes/orderRoute.js';
-import uploadRoute from './routes/uploadRoute.js';
+import config from "./config.js";
+import userRoute from "./routes/userRoute.js";
+import productRoute from "./routes/productRoute.js";
+import orderRoute from "./routes/orderRoute.js";
+import uploadRoute from "./routes/uploadRoute.js"; //  ensure name matches actual file (plural)
 
 // === Paths ===
 const __filename = fileURLToPath(import.meta.url);
@@ -110,7 +25,15 @@ const app = express();
 
 // === Middleware ===
 app.use(bodyParser.json());
-app.use(cors()); // Allow all origins
+
+//  CORS (Render-safe)
+app.use(
+  cors({
+    origin: ["https://ecommerce-doris-1.onrender.com"], //  your frontend Render domain
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 // === MongoDB Connection ===
 mongoose
@@ -118,28 +41,27 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log('Connected to MongoDB Atlas successfully'))
-  .catch((err) => console.error('MongoDB connection error:', err.message));
+  .then(() => console.log("Connected to MongoDB Atlas successfully"))
+  .catch((err) => console.error("MongoDB connection error:", err.message));
 
-// === Serve Uploads Folder ===
-// Note: Render’s filesystem is ephemeral; use S3 or Cloudinary for persistent storage
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// === Serve Uploads Folder (for temporary files only) ===
+// Cloudinary will handle permanent storage, but this keeps temp uploads functional.
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 // === API Routes ===
-app.use('/api/uploads', uploadRoute);
-app.use('/api/users', userRoute);
-app.use('/api/products', productRoute);
-app.use('/api/orders', orderRoute);
+app.use("/api/upload", uploadRoute); //  singular for consistency with frontend axiosInstance.post("/upload")
+app.use("/api/users", userRoute);
+app.use("/api/products", productRoute);
+app.use("/api/orders", orderRoute);
 
-// === PayPal Config Route ===
-app.get('/api/config/paypal', (req, res) => {
+// === PayPal Config Route (optional) ===
+app.get("/api/config/paypal", (req, res) => {
   res.send(config.PAYPAL_CLIENT_ID);
 });
 
-// === Base route ===
-// This replaces the React serving code — keeps backend clean for API use
-app.get('/', (req, res) => {
-  res.send('API is running...');
+// === Root route ===
+app.get("/", (req, res) => {
+  res.send("API is running and connected to MongoDB & Cloudinary");
 });
 
 // === Start Server ===

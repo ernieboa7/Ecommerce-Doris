@@ -3,7 +3,7 @@
 import jwt from 'jsonwebtoken';
 import config from './config.js';
 
-// 🔐 Generate a JWT token for a user
+//  Generate a JWT token for a user
 const getToken = (user) => {
   return jwt.sign(
     {
@@ -19,7 +19,7 @@ const getToken = (user) => {
   );
 };
 
-// 🔐 Middleware to verify JWT token (authentication)
+//  Middleware to verify JWT token (authentication)
 const isAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -37,7 +37,7 @@ const isAuth = (req, res, next) => {
   }
 };
 
-// 🔒 Middleware to check if user is an admin
+//  Middleware to check if user is an admin
 const isAdmin = (req, res, next) => {
   if (req.user && req.user.isAdmin) {
     return next();

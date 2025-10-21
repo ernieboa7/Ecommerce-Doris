@@ -1,114 +1,45 @@
+// backend/routes/uploadRoutes.js
+import express from "express";
+import multer from "multer";
+import fs from "fs";
+import { v2 as cloudinary } from "cloudinary";
+import dotenv from "dotenv";
+import { isAuth, isAdmin } from "../util.js"; //  secure upload route
 
-
-
-/*import express from 'express';
-import multer from 'multer';
-import multerS3 from 'multer-s3';
-import { S3Client } from '@aws-sdk/client-s3';
-import fs from 'fs';
-import path from 'path';
-import config from '../config.js';
-
-const router = express.Router();
-
-// Ensure local uploads directory exists
-const localUploadDir = path.resolve('uploads');
-if (!fs.existsSync(localUploadDir)) {
-  fs.mkdirSync(localUploadDir);
-}
-
-// Local file storage config
-const localStorage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename(req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
-});
-
-const uploadLocal = multer({ storage: localStorage });
-
-// Local upload route
-
-router.post('/', uploadLocal.single('image'), (req, res) => {
-  try {
-    if (!req.file) {
-      return res.status(400).send('No file uploaded.');
-    }
-    const filePath = `/${req.file.path.replace(/\\/g, '/')}`;
-    res.send(filePath);
-  } catch (error) {
-    console.error('Local upload error:', error.message);
-    res.status(500).send('Server error during local upload.');
-  }
-});
-
-
-
-
-// AWS S3 client setup
-const s3 = new S3Client({
-  region: process.env.AWS_REGION || 'eu-west-1',
-  credentials: {
-    accessKeyId: config.accessKeyId,
-    secretAccessKey: config.secretAccessKey,
-  },
-});
-
-// S3 storage config
-const s3Storage = multerS3({
-  s3,
-  bucket: process.env.AWS_BUCKET_NAME || 'susana-bucket',
-  acl: 'public-read',
-  contentType: multerS3.AUTO_CONTENT_TYPE,
-  key(req, file, cb) {
-    cb(null, `uploads/${Date.now()}-${file.originalname}`);
-  },
-});
-
-const uploadS3 = multer({ storage: s3Storage });
-
-
-
-// S3 upload route
-router.post('/s3', uploadS3.single('image'), (req, res) => {
-  try {
-    if (!req.file || !req.file.location) {
-      return res.status(400).send('S3 upload failed.');
-    }
-    res.send(req.file.location);
-  } catch (error) {
-    console.error('S3 upload error:', error.message);
-    res.status(500).send('Server error during S3 upload.');
-  }
-});
-
-export default router;
-*/
-
-
-import express from 'express';
-import multer from 'multer';
-import path from 'path';
+dotenv.config();
 
 const router = express.Router();
 
-// Multer storage configuration
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/'); // folder to save uploaded images
-  },
-  filename(req, file, cb) {
-    cb(null, `${Date.now()}-${file.originalname}`);
-  },
+//  Configure Cloudinary from environment
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-const upload = multer({ storage });
+//  Multer setup: temporary file storage
+const upload = multer({ dest: "uploads/" });
 
-// Route to handle file upload
-router.post('/', upload.single('image'), (req, res) => {
-  res.send({ url: `/${req.file.path}` }); // return image URL
+// POST /api/upload — upload image (auth + admin protected)
+router.post("/", isAuth, isAdmin, upload.single("image"), async (req, res) => {
+  try {
+    // Upload the image to Cloudinary
+    const result = await cloudinary.uploader.upload(req.file.path, {
+      folder: "ecommerce",
+      use_filename: true,
+      unique_filename: true,
+      overwrite: false,
+    });
+
+    // Delete temp file from Render container
+    fs.unlinkSync(req.file.path);
+
+    // Respond with Cloudinary URL
+    res.json({ url: result.secure_url });
+  } catch (err) {
+    console.error("Cloudinary Upload Error:", err.message);
+    res.status(500).json({ message: "Image upload failed", error: err.message });
+  }
 });
 
 export default router;
