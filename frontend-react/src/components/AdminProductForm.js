@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import axiosInstance from "../utils/api"; // ✅ use centralized axios instance
+import axiosInstance from "../utils/api"; //  use centralized axios instance
 
 function AdminProductForm({ product, onSave }) {
   const [name, setName] = useState(product?.name || "");
@@ -8,7 +8,7 @@ function AdminProductForm({ product, onSave }) {
   const [image, setImage] = useState(product?.image || "");
   const [uploading, setUploading] = useState(false);
 
-  // ✅ Get logged-in user (to get the token)
+  //  Get logged-in user (to get the token)
   const userSignin = useSelector((state) => state.userSignin);
   const { userInfo } = userSignin || {};
 
@@ -22,28 +22,28 @@ function AdminProductForm({ product, onSave }) {
     try {
       setUploading(true);
 
-      // ✅ Upload to backend /api/upload (NOT /api/uploads)
+      //  Upload to backend /api/upload (NOT /api/uploads)
       const { data } = await axiosInstance.post("/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${userInfo?.token}`, // ✅ auth required for admin route
+          Authorization: `Bearer ${userInfo?.token}`, //  auth required for admin route
         },
       });
 
-      // ✅ Set Cloudinary URL returned from backend
+      //  Set Cloudinary URL returned from backend
       setImage(data.url);
       setUploading(false);
-      alert("✅ Image uploaded successfully!");
+      alert(" Image uploaded successfully!");
     } catch (error) {
-      console.error("❌ Upload failed:", error);
-      alert("❌ Upload failed. Check console/logs.");
+      console.error(" Upload failed:", error);
+      alert(" Upload failed. Check console/logs.");
       setUploading(false);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSave({ name, price, image }); // ✅ Pass uploaded Cloudinary URL
+    onSave({ name, price, image }); //  Pass uploaded Cloudinary URL
   };
 
   return (
