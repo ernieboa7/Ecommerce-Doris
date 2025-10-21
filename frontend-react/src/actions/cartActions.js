@@ -55,3 +55,7 @@ export const savePayment = (data) => (dispatch) => {
   dispatch({ type: CART_SAVE_PAYMENT, payload: data });
   Cookies.set("paymentMethod", JSON.stringify(data));
 };
+
+
+
+

@@ -14,7 +14,7 @@ import config from "./config.js";
 import userRoute from "./routes/userRoute.js";
 import productRoute from "./routes/productRoute.js";
 import orderRoute from "./routes/orderRoute.js";
-import uploadRoute from "./routes/uploadRoute.js"; //  ensure name matches actual file (plural)
+import uploadRoutes from "./routes/uploadRoutes.js"; //  ensure name matches actual file (plural)
 
 // === Paths ===
 const __filename = fileURLToPath(import.meta.url);
@@ -48,8 +48,10 @@ mongoose
 // Cloudinary will handle permanent storage, but this keeps temp uploads functional.
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
+
+
 // === API Routes ===
-app.use("/api/upload", uploadRoute); //  singular for consistency with frontend axiosInstance.post("/upload")
+app.use("/api/upload", uploadRoutes); //  singular for consistency with frontend axiosInstance.post("/upload")
 app.use("/api/users", userRoute);
 app.use("/api/products", productRoute);
 app.use("/api/orders", orderRoute);
