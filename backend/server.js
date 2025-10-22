@@ -28,7 +28,7 @@ const app = express();
 // === Middleware ===
 app.use(bodyParser.json());
 
-import cors from "cors";
+
 
 const allowedOrigins = [
   "https://ecommerce-doris-1.onrender.com",
