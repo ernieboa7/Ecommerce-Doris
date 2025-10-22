@@ -110,10 +110,13 @@ export default AdminProductForm; */
 
 
 
+/*
+
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../utils/api";
 import { saveProduct } from "../actions/productActions";
+import ImageUpload from "./ImageUpload";
 
 function AdminProductForm() {
   const dispatch = useDispatch();
@@ -253,3 +256,104 @@ function AdminProductForm() {
 
 export default AdminProductForm;
 
+*/
+
+
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { saveProduct } from "../actions/productActions";
+import ImageUpload from "./ImageUpload";
+
+function AdminProductForm() {
+  const dispatch = useDispatch();
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState(0);
+  const [image, setImage] = useState("");
+  const [description, setDescription] = useState("");
+  const [category, setCategory] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!name || !price || !image) {
+      return alert("Please fill all required fields and upload an image.");
+    }
+
+    const product = { name, price, image, category, description };
+    dispatch(saveProduct(product));
+    alert("✅ Product saved successfully!");
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      style={{ maxWidth: "500px", margin: "auto", textAlign: "left" }}
+    >
+      <h2>Create New Product</h2>
+
+      <div>
+        <label>Name</label>
+        <input
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+      </div>
+
+      <div>
+        <label>Price (€)</label>
+        <input
+          type="number"
+          value={price}
+          onChange={(e) => setPrice(Number(e.target.value))}
+          required
+        />
+      </div>
+
+      <div>
+        <label>Category</label>
+        <input
+          type="text"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          placeholder="e.g. Electronics"
+        />
+      </div>
+
+      <div>
+        <label>Description</label>
+        <textarea
+          rows="3"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+
+      {/* 🧩 New ImgBB Upload Component */}
+      <ImageUpload onUpload={(url) => setImage(url)} />
+
+      {image && (
+        <div style={{ marginTop: "10px" }}>
+          <img src={image} alt="preview" width="120" />
+          <p>
+            Uploaded URL:{" "}
+            <a href={image} target="_blank" rel="noopener noreferrer">
+              {image}
+            </a>
+          </p>
+        </div>
+      )}
+
+      <button
+        type="submit"
+        style={{ marginTop: "15px", padding: "8px 16px", cursor: "pointer" }}
+      >
+        Save Product
+      </button>
+    </form>
+  );
+}
+
+export default AdminProductForm;

@@ -71,6 +71,7 @@ function ProductsScreen() {
   };
 
   // Handle image file upload
+  /*
   const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     const formData = new FormData();
@@ -88,6 +89,38 @@ function ProductsScreen() {
       setUploading(false);
     }
   };
+  */
+
+  const uploadFileHandler = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append("image", file);
+
+    setUploading(true);
+
+    try {
+      const res = await fetch(
+        `https://api.imgbb.com/1/upload?key=${process.env.REACT_APP_IMGBB_API_KEY}`,
+        { method: "POST", body: formData }
+      );
+      const data = await res.json();
+      setImage(data.data.url);
+    } catch (error) {
+      console.error("Upload failed:", error);
+      alert("Image upload failed. Check console.");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+
+
+
+
+
+
 
   const submitHandler = (e) => {
     e.preventDefault();
