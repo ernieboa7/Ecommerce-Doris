@@ -38,7 +38,7 @@ function SigninScreen() {
   useEffect(() => {
     if (userInfo) {
       if (userInfo.isAdmin) {
-        navigate("/products");
+        navigate("/profile");
       } else {
         navigate(redirect || "/");
       }
