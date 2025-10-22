@@ -127,6 +127,9 @@ export const saveProductReview =
 
 
 import axiosInstance from "../utils/api";
+
+
+import axios from 'axios';
 import {
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
@@ -143,62 +146,27 @@ import {
   PRODUCT_REVIEW_SAVE_REQUEST,
   PRODUCT_REVIEW_SAVE_SUCCESS,
   PRODUCT_REVIEW_SAVE_FAIL,
-} from "../constants/productConstants";
+} from '../constants/productConstants';
 
-//
-//  UPLOAD PRODUCT IMAGE (Cloudinary Integration)
-//
-const uploadProductImage = (file) => async (dispatch, getState) => {
+const API_URL = process.env.REACT_APP_API_BASE_URL || '';
+
+export const listProducts = (category = '', searchKeyword = '', sortOrder = '') => async (dispatch) => {
   try {
-    const formData = new FormData();
-    formData.append("image", file);
-
-    const {
-      userSignin: { userInfo },
-    } = getState();
-
-    const { data } = await axiosInstance.post("/upload", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    });
-
-    // Cloudinary returns the image URL
-    return data.url;
+    dispatch({ type: PRODUCT_LIST_REQUEST });
+    const { data } = await axiosInstance.get(`${API_URL}/products?category=${category}&searchKeyword=${searchKeyword}&sortOrder=${sortOrder}`);
+    dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
-    console.error("Image upload failed:", error.response?.data || error.message);
-    throw error;
+    dispatch({
+      type: PRODUCT_LIST_FAIL,
+      payload: error.response?.data?.message || error.message,
+    });
   }
 };
 
-//
-//  LIST PRODUCTS
-//
-const listProducts =
-  (category = "", searchKeyword = "", sortOrder = "") =>
-  async (dispatch) => {
-    try {
-      dispatch({ type: PRODUCT_LIST_REQUEST });
-      const { data } = await axiosInstance.get(
-        `/products?category=${category}&searchKeyword=${searchKeyword}&sortOrder=${sortOrder}`
-      );
-      dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
-    } catch (error) {
-      dispatch({
-        type: PRODUCT_LIST_FAIL,
-        payload: error.response?.data?.message || error.message,
-      });
-    }
-  };
-
-//
-//  PRODUCT DETAILS
-//
-const detailsProduct = (productId) => async (dispatch) => {
+export const detailsProduct = (productId) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST, payload: productId });
-    const { data } = await axiosInstance.get(`/products/${productId}`);
+    const { data } = await axiosInstance.get(`${API_URL}/products/${productId}`);
     dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -208,25 +176,17 @@ const detailsProduct = (productId) => async (dispatch) => {
   }
 };
 
-//
-//  CREATE OR UPDATE PRODUCT
-//
-const saveProduct = (product) => async (dispatch, getState) => {
+export const saveProduct = (product) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_SAVE_REQUEST, payload: product });
     const {
       userSignin: { userInfo },
     } = getState();
 
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userInfo.token}`,
-      },
-    };
-
+    const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
     const { data } = product._id
-      ? await axiosInstance.put(`/products/${product._id}`, product, config)
-      : await axiosInstance.post(`/products`, product, config);
+      ? await axiosInstance.put(`${API_URL}/products/${product._id}`, product, config)
+      : await axiosInstance.post(`${API_URL}/products`, product, config);
 
     dispatch({ type: PRODUCT_SAVE_SUCCESS, payload: data });
   } catch (error) {
@@ -237,20 +197,15 @@ const saveProduct = (product) => async (dispatch, getState) => {
   }
 };
 
-//
-//  DELETE PRODUCT
-//
-const deleteProduct = (productId) => async (dispatch, getState) => {
+export const deleteProduct = (productId) => async (dispatch, getState) => {
   try {
     dispatch({ type: PRODUCT_DELETE_REQUEST, payload: productId });
     const {
       userSignin: { userInfo },
     } = getState();
-
-    const { data } = await axiosInstance.delete(`/products/${productId}`, {
+    const { data } = await axiosInstance.delete(`${API_URL}/products/${productId}`, {
       headers: { Authorization: `Bearer ${userInfo.token}` },
     });
-
     dispatch({ type: PRODUCT_DELETE_SUCCESS, payload: data });
   } catch (error) {
     dispatch({
@@ -260,39 +215,22 @@ const deleteProduct = (productId) => async (dispatch, getState) => {
   }
 };
 
-//
-// SAVE PRODUCT REVIEW
-//
-const saveProductReview =
-  (productId, review) => async (dispatch, getState) => {
-    try {
-      dispatch({ type: PRODUCT_REVIEW_SAVE_REQUEST, payload: review });
-      const {
-        userSignin: { userInfo },
-      } = getState();
-
-      const { data } = await axiosInstance.post(
-        `/products/${productId}/reviews`,
-        review,
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-
-      dispatch({ type: PRODUCT_REVIEW_SAVE_SUCCESS, payload: data });
-    } catch (error) {
-      dispatch({
-        type: PRODUCT_REVIEW_SAVE_FAIL,
-        payload: error.response?.data?.message || error.message,
-      });
-    }
-  };
-
-export {
-  uploadProductImage,
-  listProducts,
-  detailsProduct,
-  saveProduct,
-  deleteProduct,
-  saveProductReview,
-};    
+export const saveProductReview = (productId, review) => async (dispatch, getState) => {
+  try {
+    dispatch({ type: PRODUCT_REVIEW_SAVE_REQUEST, payload: review });
+    const {
+      userSignin: { userInfo },
+    } = getState();
+    const { data } = await axiosInstance.post(
+      `${API_URL}/products/${productId}/reviews`,
+      review,
+      { headers: { Authorization: `Bearer ${userInfo.token}` } }
+    );
+    dispatch({ type: PRODUCT_REVIEW_SAVE_SUCCESS, payload: data });
+  } catch (error) {
+    dispatch({
+      type: PRODUCT_REVIEW_SAVE_FAIL,
+      payload: error.response?.data?.message || error.message,
+    });
+  }
+};
