@@ -20,6 +20,8 @@ import uploadRoutes from "./routes/uploadRoutes.js"; //  ensure name matches act
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+
+
 // === Init Express ===
 const app = express();
 
@@ -62,6 +64,9 @@ app.get("/api/config/paypal", (req, res) => {
 });
 
 // === Root route ===
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+});
 app.get("/", (req, res) => {
   res.send("API is running and connected to MongoDB & Cloudinary");
 });
