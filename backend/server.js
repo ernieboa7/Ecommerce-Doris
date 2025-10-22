@@ -28,14 +28,28 @@ const app = express();
 // === Middleware ===
 app.use(bodyParser.json());
 
-//  CORS (Render-safe)
+import cors from "cors";
+
+const allowedOrigins = [
+  "https://ecommerce-doris-1.onrender.com",
+  "https://ecommerce-doris.onrender.com",
+  "http://localhost:3000",
+];
+
 app.use(
   cors({
-    origin: ["https://ecommerce-doris-1.onrender.com"], //  your frontend Render domain
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("CORS blocked for this origin"));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
+
 
 // === MongoDB Connection ===
 mongoose
@@ -64,11 +78,13 @@ app.get("/api/config/paypal", (req, res) => {
 });
 
 // === Root route ===
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-});
+
 app.get("/", (req, res) => {
   res.send("API is running and connected to MongoDB & Cloudinary");
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
 });
 
 // === Start Server ===
