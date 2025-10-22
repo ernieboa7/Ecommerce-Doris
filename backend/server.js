@@ -117,7 +117,7 @@ import config from './config.js';
 import userRoute from './routes/userRoute.js';
 import productRoute from './routes/productRoute.js';
 import orderRoute from './routes/orderRoute.js';
-import uploadRoute from './routes/uploadRoute.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -137,16 +137,19 @@ app.use(cors()); // Allow all origins by default
 // Serve uploads folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+
+
 // === MongoDB Connection ===
-mongoose.connect(config.MONGODB_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("Connected to MongoDB Atlas successfully"))
-.catch((err) => console.error("MongoDB connection error:", err.message));
+mongoose
+  .connect(config.MONGODB_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB Atlas successfully"))
+  .catch((err) => console.error("MongoDB connection error:", err.message));
 
 // === API Routes ===
-app.use('/api/uploads', uploadRoute);
+app.use('/api/uploads', uploadRoutes);
 app.use('/api/users', userRoute);
 app.use('/api/products', productRoute);
 app.use('/api/orders', orderRoute);
