@@ -3,13 +3,12 @@
 
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Row,
   Col,
   ListGroup,
   Card,
-  Image,
   Alert,
   Spinner,
 } from 'react-bootstrap';
