@@ -112,7 +112,7 @@ function App() {
       </Offcanvas>
 
       {/* MAIN CONTENT */}
-      <Container className="mb-5">
+      <Container className="mb-5" style={{ paddingBottom: '80px' }}>
         <Routes>
           {/* Admin Routes */}
           <Route path="/admin/orders" element={<AdminRoute><OrdersScreen /></AdminRoute>} />
@@ -141,8 +141,8 @@ function App() {
       </Container>
 
       {/* FOOTER */}
-      <footer className="bg-dark text-light text-center py-3 bottom-fixed" >
-        <Container>Contact Customer Care: +353 123456789.</Container>
+      <footer className="bg-dark text-light text-center py-3 fixed-bottom">
+        <Container>Costumer Care Contact: +353123456789.</Container>
       </footer>
     </>
   );
