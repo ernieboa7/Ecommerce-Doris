@@ -1,0 +1,151 @@
+name: CI/CD Pipeline for Doris Ecommerce App (Render + Tests + Email + Slack)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build_test_deploy:
+    name: Build, Test, and Deploy MERN App
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [20.x]
+
+    steps:
+      # Checkout repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # Setup Node
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Install backend dependencies
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm install
+
+      # Install frontend dependencies
+      - name: Install frontend dependencies
+        working-directory: frontend-react
+        run: npm install
+
+      # Build frontend
+      - name: Build frontend
+        working-directory: frontend-react
+        run: npm run build
+
+      # Run backend tests
+      - name: Run backend tests
+        working-directory: backend
+        run: |
+          echo " Running backend tests..."
+          npm test
+
+      # Run frontend tests
+      - name: Run frontend tests
+        working-directory: frontend-react
+        run: |
+          echo " Running frontend tests..."
+          npm test
+
+      #  Deploy backend to Render
+      - name: Deploy backend to Render
+        if: success()
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_BACKEND_ID: ${{ secrets.RENDER_BACKEND_ID }}
+        run: |
+          echo " Tests passed — deploying backend..."
+          curl -X POST "https://api.render.com/v1/services/${RENDER_BACKEND_ID}/deploys" \
+          -H "Authorization: Bearer ${RENDER_API_KEY}" || exit 1
+
+      #  Deploy frontend to Render
+      - name: Deploy frontend to Render
+        if: success()
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          RENDER_FRONTEND_ID: ${{ secrets.RENDER_FRONTEND_ID }}
+        run: |
+          echo " Tests passed — deploying frontend..."
+          curl -X POST "https://api.render.com/v1/services/${RENDER_FRONTEND_ID}/deploys" \
+          -H "Authorization: Bearer ${RENDER_API_KEY}" || exit 1
+
+      #  Email on SUCCESS
+      - name: Send success email
+        if: success()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          secure: true
+          subject: " Doris Ecommerce App Deploy Succeeded: ${{ github.repository }} @ ${{ github.ref_name }}"
+          to: "ernieboa57@gmail.com"
+          from: "CI/CD Bot <${{ secrets.SMTP_USERNAME }}>"
+          body: |
+            ✅ Deployment succeeded!
+
+            Repository: ${{ github.repository }}
+            Branch:     ${{ github.ref_name }}
+            Commit:     ${{ github.sha }}
+            Actor:      ${{ github.actor }}
+            Run:        https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      #  Email on FAILURE
+      - name: Send failure email
+        if: failure()
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: ${{ secrets.SMTP_SERVER }}
+          server_port: ${{ secrets.SMTP_PORT }}
+          username: ${{ secrets.SMTP_USERNAME }}
+          password: ${{ secrets.SMTP_PASSWORD }}
+          secure: true
+          subject: " Doris Ecommerce App Deploy Failed: ${{ github.repository }} @ ${{ github.ref_name }}"
+          to: "ernieboa57@gmail.com"
+          from: "CI/CD Bot <${{ secrets.SMTP_USERNAME }}>"
+          body: |
+            ❌ Deployment failed!
+
+            Repository: ${{ github.repository }}
+            Branch:     ${{ github.ref_name }}
+            Commit:     ${{ github.sha }}
+            Actor:      ${{ github.actor }}
+            Run:        https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      #  Slack SUCCESS notification
+      - name: Slack success notification
+        if: success()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: " Doris Ecommerce App Deployment Successful"
+          SLACK_MESSAGE: |
+            ✅ Deployment succeeded!
+            *Repository:* ${{ github.repository }}
+            *Branch:* ${{ github.ref_name }}
+            *Commit:* ${{ github.sha }}
+            *Actor:* ${{ github.actor }}
+            *Run:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+      #  Slack FAILURE notification
+      - name: Slack failure notification
+        if: failure()
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_TITLE: " Doris Ecommerce App Deployment Failed"
+          SLACK_MESSAGE: |
+            ❌ Deployment failed!
+            *Repository:* ${{ github.repository }}
+            *Branch:* ${{ github.ref_name }}
+            *Commit:* ${{ github.sha }}
+            *Actor:* ${{ github.actor }}
+            *Run:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}
