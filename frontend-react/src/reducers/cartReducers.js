@@ -3,6 +3,7 @@ import {
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING,
   CART_SAVE_PAYMENT,
+  CART_EMPTY,
 } from "../constants/cartConstants";
 
 function cartReducer(
@@ -39,6 +40,9 @@ function cartReducer(
 
     case CART_SAVE_PAYMENT:
       return { ...state, payment: action.payload };
+    
+    case CART_EMPTY:
+      return { ...state, cartItems: [] };     // To empty the cart after order is placed  
 
     default:
       return state;
