@@ -57,6 +57,15 @@ jobs:
       - name: Skip frontend tests (temporary)
         run: echo "Skipping React tests in CI until Redux Provider mock is added"
     
+      - name: 🕵️ Check required secrets
+        run: |
+          if [ -z "${{ secrets.RENDER_API_KEY }}" ] || [ -z "${{ secrets.RENDER_BACKEND_ID }}" ] || [ -z "${{ secrets.RENDER_FRONTEND_ID }}" ]; then
+            echo "❌ Missing required Render secrets!"
+            exit 1
+          else
+            echo "✅ All required secrets are set."
+          fi
+  
 
       #  Deploy backend to Render
       - name: Deploy backend to Render
