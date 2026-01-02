@@ -142,7 +142,7 @@ function App() {
 
       {/* FOOTER */}
       <footer className="bg-dark text-light text-center py-3 fixed-bottom">
-        <Container>Costumer Care Contact: +353123456789.</Container>
+        <Container>Costumer Care Contact: +353857793251.</Container>
       </footer>
     </>
   );
