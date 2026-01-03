@@ -15,7 +15,7 @@ import {
 import { detailsOrder, payOrder } from '../actions/orderActions';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
-import clearCart from "../actions/cartActions"; // CLEAR CART AFTER PAYMENT
+import { clearCart } from "../actions/cartActions"; // CLEAR CART AFTER PAYMENT
 
 function OrderScreen() {
   const { id: orderId } = useParams();

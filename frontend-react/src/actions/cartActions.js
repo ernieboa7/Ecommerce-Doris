@@ -40,8 +40,9 @@ const savePayment = (data) => (dispatch) => {
 
 const clearCart = () => (dispatch) => {
   dispatch({ type: CART_CLEAR });
-  Cookie.remove("cartItems");
+  Cookie.remove("cartItems", { path: "/" });
 };
+
 
 
 export { addToCart, removeFromCart, saveShipping, savePayment, clearCart};
