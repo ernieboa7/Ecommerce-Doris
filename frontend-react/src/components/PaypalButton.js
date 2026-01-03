@@ -3,13 +3,21 @@ import ReactDOM from 'react-dom';
 import axios from 'axios';
 function PaypalButton(props) {
   const [sdkReady, setSdkReady] = useState(false);
+  if (document.getElementById("paypal-sdk")) {             // new changes for paypal
+    setSdkReady(true);
+    return;
+  }
+
 
   const addPaypalSdk = async () => {
     const result = await axios.get("/api/config/paypal");
     const clientID = result.data;
     const script = document.createElement('script');
     script.type = 'text/javascript';
-    script.src = 'https://www.paypal.com/sdk/js?client-id=' + clientID;
+    script.id = "paypal-sdk";
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientID}&currency=USD`;
+
+    //script.src = 'https://www.paypal.com/sdk/js?client-id=' + clientID;
     script.async = true;
     script.onload = () => {
       setSdkReady(true);
