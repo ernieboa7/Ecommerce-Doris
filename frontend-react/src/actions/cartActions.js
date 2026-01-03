@@ -42,10 +42,20 @@ const savePayment = (data) => (dispatch) => {
 
 
 
+
+
 const clearCart = () => (dispatch) => {
   dispatch({ type: CART_CLEAR });
+
+  // Clear redux + kill cookie no matter how it was saved before
+  Cookie.remove("cartItems");
   Cookie.remove("cartItems", { path: "/" });
+
+  // Extra safety: overwrite to empty (covers some edge cases)
+  Cookie.set("cartItems", "[]");
+  Cookie.set("cartItems", "[]", { path: "/" });
 };
+
 
 
 
