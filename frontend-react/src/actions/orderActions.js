@@ -73,7 +73,7 @@ const payOrder = (order, paymentResult) => async (dispatch, getState) => {
         { Authorization: 'Bearer ' + userInfo.token }
     });
     dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
-    dispatch(clearCart()); // ✅ clear cart right here (guaranteed on success)
+    dispatch(clearCart()); //  clear cart right here (guaranteed on success)
   } catch (error) {
     dispatch({ type: ORDER_PAY_FAIL, payload: error.message });
   }
