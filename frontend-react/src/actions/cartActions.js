@@ -37,12 +37,11 @@ const savePayment = (data) => (dispatch) => {
 }
 
 
+
 const clearCart = () => (dispatch) => {
   dispatch({ type: CART_CLEAR });
-  Cookie.remove("cartItems"); // minimal + correct
-  // OR: Cookie.set("cartItems", JSON.stringify([]));
+  Cookie.remove("cartItems");
 };
-
 
 
 export { addToCart, removeFromCart, saveShipping, savePayment, clearCart};
