@@ -15,6 +15,8 @@ import {
 import { detailsOrder, payOrder } from '../actions/orderActions';
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 
+import { clearCart } from "../actions/cartActions"; // CLEAR CART AFTER PAYMENT
+
 function OrderScreen() {
   const { id: orderId } = useParams();
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ function OrderScreen() {
 
   useEffect(() => {
     if (successPay) {
+      dispatch(clearCart());   // Clear cart after payment success
       navigate('/profile');
     } else {
       dispatch(detailsOrder(orderId));
